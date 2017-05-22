@@ -3,3 +3,4 @@ node_modules
 .DS_STORE
 wwwroot/scripts/app-bundle.*
 wwwroot/scripts/vendor-bundle.*
+wwwroot/lib

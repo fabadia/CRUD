@@ -29,7 +29,10 @@ namespace CRUD
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(o=> {
+                ((Newtonsoft.Json.Serialization.DefaultContractResolver)o.SerializerSettings.ContractResolver).NamingStrategy.ProcessDictionaryKeys = true;
+                o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddDbContext<Data.AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 

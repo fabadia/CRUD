@@ -1,0 +1,22 @@
+﻿<template>
+    <table class="table table-striped table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>e-Mail</th>
+                <th>Skype</th>
+                <th>LinkedIn</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr repeat.for="candidato of candidatos">
+                <td>${candidato.id}</td>
+                <td>${candidato.nome}</td>
+                <td>${candidato.eMail}</td>
+                <td>${candidato.skype}</td>
+                <td>${candidato.linkedIn}</td>
+            </tr>
+        </tbody>
+    </table>
+</template>

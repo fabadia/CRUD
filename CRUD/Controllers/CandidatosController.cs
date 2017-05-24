@@ -24,6 +24,23 @@ namespace CRUD.Controllers
             _context = context;
         }
 
+        [HttpGet("metadata")]
+        public IEnumerable GetCandidatoMetadata()
+        {
+            var properties = typeof(Candidato).GetProperties();
+            var metadata = new Dictionary<string, Dictionary<string, object>>();
+            Dictionary<string, object> info;
+            foreach (var property in properties)
+            {
+                string nome = property.Name;
+                string titulo = property.GetCustomAttribute<DisplayAttribute>()?.Name ?? (property.Name.StartsWith("Nivel") ? property.Name.Substring(5) : property.Name);
+
+                metadata.Add(nome, info = new Dictionary<string, object>());
+                info.Add("Titulo", titulo);
+            }
+            return metadata;
+        }
+
         // GET: api/Candidatos
         [HttpGet]
         public IEnumerable GetCandidatos()

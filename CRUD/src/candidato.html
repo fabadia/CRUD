@@ -1,0 +1,142 @@
+<template>
+    <ux-dialog class="panel-primary modal-lg">
+        <ux-dialog-header class="panel-heading">
+            <h2 class="panel-title">${operacao}</h2>
+        </ux-dialog-header>
+        <ux-dialog-body style="max-height: calc(100vh - 190px);overflow-x: hidden;overflow-y: auto;">
+            <form role="form">
+                <div show.bind="pagination.currentPage === 1">
+                    <div class="form-group form-group-sm row">
+                        <div class="col-sm-3">
+                            <label class="control-label" for="email">e-Mail</label>
+                            <input type="email" id="email" name="EMail" class="form-control" placeholder="e-Mail" value.bind="candidato.eMail" />
+                        </div>
+                    </div>
+                </div>
+                <div show.bind="pagination.currentPage === 2">
+                    <h2>Occupation area / Área de atuação</h2>
+                    <p>If you are a developer or DBA, continue filling out this form / Se você atua como desenvolvedor ou DBA, continue o preenchimento deste formulário</p>
+                    <p>If you act as a designer, fill out the form available at / Se você atua como designer, preencha ao formulário disponível em <a href="https://goo.gl/forms/UJl8Oa91ubN3HRUm1">https://goo.gl/forms/UJl8Oa91ubN3HRUm1</a></p>
+                    <p>If you work in the administrative, customer service or commercial area, fill out the form available at / Se você atua na área administrativa, atendimento ao cliente ou comercial, preencha ao formulário disponível em <a href="https://goo.gl/forms/0M99jjUwnIAw0flJ2">https://goo.gl/forms/0M99jjUwnIAw0flJ2</a></p>
+                    <div class="form-group form-group-sm">
+                        <label class="control-label" for="nome">Nome/Name</label>
+                        <input type="text" id="nome" name="Nome" class="form-control" placeholder="Nome completo" value.bind="candidato.nome" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-4">
+                            <label class="control-label" for="skype">Skype ( please create an account if you don't have yet / bom criar caso não tenha)</label>
+                            <input type="text" id="skype" name="Skype" class="form-control" placeholder="Skype" required value.bind="candidato.skype" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-4">
+                            <label class="control-label" for="telefone">Telefone/Phone (Whatsapp)</label>
+                            <input type="text" id="telefone" name="Telefone" class="form-control" placeholder="Telefone" required pattern="\(\d{2}\) \d{4,5}-\d{4}" value.bind="candidato.telefone" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-4">
+                            <label class="control-label" for="linkedin">Linkedin</label>
+                            <input type="text" id="linkedin" name="LinkedIn" class="form-control" placeholder="LinkedIn" value.bind="candidato.linkedIn" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-10">
+                            <label class="control-label" for="cidade">Cidade/City</label>
+                            <input type="text" id="cidade" name="Cidade" class="form-control" placeholder="Cidade" required value.bind="candidato.cidade" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-2">
+                            <label class="control-label" for="estado">Estado/State</label>
+                            <input type="text" id="estado" name="Estado" class="form-control" placeholder="UF" required value.bind="candidato.estado" />
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="control-label" for="portifolio">Portifolio</label>
+                        <input type="text" id="portifolio" name="Portifolio" class="form-control" placeholder="Portifolio" value.bind="candidato.portifolio" />
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="control-label">What is your willingness to work today? / Qual é sua disponibilidade para trabalhar hoje?</label>
+                        <checkbox-set name="Disponibilidades" items.bind="disponibilidades" value-id="disponibilidadeId" values.bind="candidato.candidatoDisponibilidades"></checkbox-set>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="control-label">What's the best time to work for you? / Pra você qual é o melhor horário para trabalhar?</label>
+                        <checkbox-set name="MelhoresHorarios" items.bind="melhoresHorarios" value-id="melhorHorarioId" values.bind="candidato.candidatoMelhoresHorarios"></checkbox-set>
+                    </div>
+                    <div class="form-group form-group-sm row">
+                        <div class="col-sm-6">
+                            <label class="control-label" for="pretencao-salarial-hora">What is your hourly salary requirements? / Qual sua pretensão salarial por hora?</label>
+                            <input type="number" id="pretencao-salarial-hora" name="PretencaoSalarialHora" class="form-control" placeholder="Pretenção por hora" required value.bind="candidato.pretencaoSalarialHora" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-6">
+                            <label class="control-label" for="informacaoBancaria">Bank Information / Paypal / Itau etc</label>
+                            <p>Banco brasileiro precisa: Nome, CPF, Banco, Agencia, Conta Corrente ou Poupanca</p>
+                            <input type="text" id="informacaoBancaria" name="InformacaoBancaria" class="form-control" placeholder="Informação Bancária" value.bind="candidato.informacaoBancaria" />
+                        </div>
+                    </div>
+                </div>
+                <div show.bind="pagination.currentPage === 3">
+                    <h2>Bank Information / Informação bancária</h2>
+                    <p>You can choose to receive your payment through Paypal, PagSeguro or conventional bank accounts / Você pode optar em receber seu pagamento pelo Paypal, PagSeguro ou contas bancarias convencionais</p>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-6">
+                            <label class="control-label" for="cpf">Only for Brazilians / CPF</label>
+                            <input type="text" id="cpf" name="Cpf" class="form-control" placeholder="CPF" pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$" value.bind="candidato.cpf" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-6">
+                            <label class="control-label" for="banco">Banco ( Itau, Bradesco, ect..)</label>
+                            <input type="text" id="banco" name="Banco" class="form-control" placeholder="Banco" value.bind="candidato.banco" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-6">
+                            <label class="control-label" for="agencia">Agency / Agência</label>
+                            <input type="text" id="agencia" name="Agencia" class="form-control" placeholder="Agência" value.bind="candidato.agencia" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-6">
+                            <label class="control-label">Account Type / Tipo de conta</label>
+                            <radio-set name="TipoConta" value.bind="candidato.tipoConta" options.bind="[[0, 'Chain / Corrente'], [1, 'Savings / Poupança']]"></radio-set>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-6">
+                            <label class="control-label" for="conta">Account Number / Número da conta</label>
+                            <input type="text" id="conta" name="Conta" class="form-control" placeholder="Conta" value.bind="candidato.conta" />
+                        </div>
+                    </div>
+                </div>
+                <div show.bind="pagination.currentPage === 4">
+                    <h2>Knowledge / Conhecimentos</h2>
+                    <p>Rate yourself from 0 to 5 for the knowledge specified below, and that's okay if you do not know many things, the important thing is to be honest! / Avalie-se de 0 a 5 quanto aos conhecimentos especificados abaixo, e tudo bem se não souber de muitas coisas, o importante é que seja sincero!</p>
+                    <div class="form-group form-group-sm" repeat.for="campo of camposNivel">
+                        <label class="control-label">${campo.titulo}</label>
+                        <radio-level name="${campo.nome}" value.bind="candidato[campo.nome]"></radio-level>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="control-label" for="outrosConhecimentos">Do you know any other language or framework that was not listed above? Tell us and evaluate yourself from 0 to 5. / Conhece mais alguma linguagem ou framework que não foi listado aqui em cima? Conte para nos e se auto avalie ainda de 0 a 5.</label>
+                        <input type="text" id="outrosConhecimentos" name="OutrosConhecimentos" class="form-control" value.bind="candidato.outrosConhecimentos" />
+                    </div>
+                    <h3>Enter the link here CRUD (create, update, delete)- read information in the welcome document quoted in the form description./ Insira aqui o link do CRUD (create, update, delete)- ler informações no documento de Boas Vindas citado na descrição do formulário.</h3>
+                    <div class="row">
+                        <div class="form-group form-group-sm col-sm-6">
+                            <label class="control-label" for="linkCrud">Link CRUD</label>
+                            <input type="text" id="linkCrud" name="LinkCrud" class="form-control" placeholder="Link" value.bind="candidato.linkCrud" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ux-dialog-body>
+        <ux-dialog-footer class="panel-footer">
+            <page-navigator view-model.ref="pagination" total-pages.bind="4" style="float:left" can-go-to-next-page.call="canGoToNextPage()"></page-navigator>
+            <button class="btn btn-success" disabled.bind="!pagination.isLastPage">Salvar</button>
+            <button class="btn btn-warning" click.trigger="controller.cancel()">Cancelar</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>

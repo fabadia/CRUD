@@ -1,0 +1,5 @@
+﻿<template>
+    <div class="radio" repeat.for="option of options">
+        <label><input type="radio" name.bind="name" model.bind="option[0]" checked.bind="value" blur.trigger="blur()" />${option[1]}</label>
+    </div>
+</template>

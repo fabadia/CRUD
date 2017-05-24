@@ -1,0 +1,5 @@
+﻿<template>
+    <div class="checkbox" repeat.for="item of items">
+        <label><input type="checkbox" name="${name}" checked.bind="item.checked" change.delegate="update(item)" blur.trigger="blur()">${item[itemLabel]}</label>
+    </div>
+</template>

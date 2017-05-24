@@ -1,0 +1,7 @@
+﻿<template>
+    <button class="btn btn-primary" click.trigger="previousPage()" disabled.bind="isFirstPage">Anterior</button>
+    <button class="btn btn-primary" click.trigger="nextPage()" disabled.bind="isLastPage">Próximo</button>
+    <div class="progress" style="display:inline-block;margin-left:10px;margin-bottom:-8px;width:200px;">
+        <div class="progress-bar" role="progressbar" max="totalPages" css="width:${currentPage/totalPages*100}%">${currentPage}/${totalPages}</div>
+    </div>
+</template>

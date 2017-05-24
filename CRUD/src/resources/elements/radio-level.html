@@ -1,0 +1,14 @@
+﻿<template>
+    <div class="level-group row">
+        <div class="col-sm-2 col-sm-offset-1 level-side-text">
+            Não conheço <br />/ I don't know
+        </div>
+        <div class="col-sm-1 text-center" repeat.for="i of (levels)">
+            <label class="control-label" for="${name}-${i}">${i}</label>
+            <div><input type="radio" id="${name}-${i}" name="${name}" model.bind="i" checked.bind="value" blur.trigger="blur()" /></div>
+        </div>
+        <div class="col-sm-2 level-side-text">
+            Senior / Sênior
+        </div>
+    </div>
+</template>

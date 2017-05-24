@@ -23,7 +23,15 @@ export class Candidatos {
 
     incluir() {
         let candidato = <any>{};
-        this.dialog.open({ viewModel: Candidato, model: candidato.id, keyboard: ['Enter', 'Escape'] })
+        this.editar(candidato)
+            .then(result => {
+                if (result)
+                    this.candidatos.push(candidato);
+            });
+    }
+
+    editar(candidato): Promise<boolean> {
+        return this.dialog.open({ viewModel: Candidato, model: candidato.id, keyboard: ['Enter', 'Escape'] })
             .then(result => {
                 return (<DialogOpenResult>result).closeResult;
             })
@@ -37,10 +45,6 @@ export class Candidatos {
                     return true;
                 }
                 return false;
-            })
-            .then(result => {
-                if (result)
-                    this.candidatos.push(candidato);
             });
     }
 }

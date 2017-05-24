@@ -20,7 +20,7 @@ export class Candidato {
         controller.settings.centerHorizontalOnly = true;
     }
 
-    activate() {
+    activate(id) {
         let http = new HttpClient();
         http.configure(config => {
             config
@@ -37,10 +37,21 @@ export class Candidato {
                     this.camposNivel.push({ nome: m, titulo: metadata[m].titulo });
         }));
 
-        this.candidato = { id: 0, candidatoDisponibilidades: [], candidatoMelhoresHorarios: [] }
-
-        this.operacao = "Novo";
-
+        if (id) {
+            promises.push(
+                this.http.fetch('/' + id)
+                    .then(response => response.json())
+                    .then(candidato => {
+                        this.candidato = candidato;
+                    }));
+        }
+        else {
+            this.candidato = { id: 0, candidatoDisponibilidades: [], candidatoMelhoresHorarios: [] }
+        }
+        if (!id)
+            this.operacao = "Novo";
+        else
+            this.operacao = "Editar";
         return Promise.all(promises);
     }
 
@@ -71,9 +82,15 @@ export class Candidato {
     }
 
     save() {
-        this.http.fetch('', { method: 'post', body: json(this.candidato) })
-            .then(response => <any>response.json())
-            .then(candidato => this.candidato.id = candidato.id)
+        let save: Promise<any>;
+        if (this.candidato.id)
+            save = this.http.fetch('/' + this.candidato.id, { method: 'put', body: json(this.candidato) });
+        else
+            save = this.http.fetch('', { method: 'post', body: json(this.candidato) })
+                .then(response => <any>response.json())
+                .then(candidato => this.candidato.id = candidato.id);
+
+        save
             .then(() => {
                 this.controller.ok(this.candidato);
             });

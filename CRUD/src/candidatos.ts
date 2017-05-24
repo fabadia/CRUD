@@ -21,7 +21,26 @@ export class Candidatos {
             .then(candidatos => this.candidatos = <any>candidatos);
     }
 
-    open() {
-        this.dialog.open({ viewModel: Candidato, model: null });
+    incluir() {
+        let candidato = <any>{};
+        this.dialog.open({ viewModel: Candidato, model: candidato.id, keyboard: ['Enter', 'Escape'] })
+            .then(result => {
+                return (<DialogOpenResult>result).closeResult;
+            })
+            .then((dialogResult) => {
+                if (!dialogResult.wasCancelled && dialogResult.output) {
+                    candidato.id = dialogResult.output.id;
+                    candidato.nome = dialogResult.output.nome;
+                    candidato.eMail = dialogResult.output.eMail;
+                    candidato.skype = dialogResult.output.skype;
+                    candidato.linkedIn = dialogResult.output.linkedIn;
+                    return true;
+                }
+                return false;
+            })
+            .then(result => {
+                if (result)
+                    this.candidatos.push(candidato);
+            });
     }
 }

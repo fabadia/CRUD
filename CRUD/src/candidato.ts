@@ -14,6 +14,7 @@ export class Candidato {
     private subscriptionPaginationChange: Disposable;
 
     constructor(private element: Element,
+        private http: HttpClient,
         private controller: DialogController,
         private bindingEngine: BindingEngine) {
         controller.settings.centerHorizontalOnly = true;
@@ -37,6 +38,8 @@ export class Candidato {
         }));
 
         this.candidato = { id: 0, candidatoDisponibilidades: [], candidatoMelhoresHorarios: [] }
+
+        this.operacao = "Novo";
 
         return Promise.all(promises);
     }
@@ -65,5 +68,14 @@ export class Candidato {
 
     canGoToNextPage(): Promise<boolean> {
         return Promise.resolve(true);
+    }
+
+    save() {
+        this.http.fetch('', { method: 'post', body: json(this.candidato) })
+            .then(response => <any>response.json())
+            .then(candidato => this.candidato.id = candidato.id)
+            .then(() => {
+                this.controller.ok(this.candidato);
+            });
     }
 }

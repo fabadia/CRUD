@@ -47,4 +47,13 @@ export class Candidatos {
                 return false;
             });
     }
+
+    excluir(candidato) {
+        this.http.fetch('/' + candidato.id, { method: 'DELETE' })
+            .then(value => {
+                let index = this.candidatos.indexOf(candidato);
+                if (index !== -1)
+                    this.candidatos.splice(index, 1);
+            });
+    }
 }

@@ -18,6 +18,7 @@ export class Candidato {
     private validationController: ValidationController = null;
     private metadata;
     private hasRequiredField: boolean;
+    private saving: boolean;
 
     constructor(private element: Element,
         private http: HttpClient,
@@ -166,9 +167,11 @@ export class Candidato {
     }
 
     save() {
+        this.saving = true;
         this.validationController.validate()
             .then(c => {
                 if (!c.valid) {
+                    this.saving = false;
                     this.checkPageAndfocus();
                 }
                 else {
@@ -185,6 +188,7 @@ export class Candidato {
                             this.controller.ok(this.candidato);
                         })
                         .catch((reason: Response) => {
+                            this.saving = false;
                             if (reason.bodyUsed)
                                 reason.json().then(value => {
                                     for (let n in value) {

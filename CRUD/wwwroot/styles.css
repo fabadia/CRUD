@@ -4,9 +4,17 @@
 body ux-dialog {
   padding: 0px;
 }
+body .backdrop,
 body ux-dialog-overlay.active {
   background: rgba(0, 0, 0, 0.4);
   opacity: 0.4;
+}
+body .backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 radio-level {
   width: 660px;
@@ -54,4 +62,66 @@ ul.help-block li {
 }
 .has-error .level-side-text {
   color: #a94442;
+}
+.spinning {
+  animation: spinning 2s infinite linear;
+  transform-origin: 50% 49%;
+}
+@keyframes spinning {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/*
+    Spinn
+*/
+.spinner {
+  width: 30px;
+  height: 30px;
+  border-bottom-color: blue;
+  position: absolute;
+  top: calc(45vh);
+  left: calc(50vw);
+  animation: spinning 0.8s infinite steps(8);
+}
+.spinner .ball {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+}
+.spinner .ball:before {
+  content: '';
+  border-radius: 50%;
+  height: 10.98901099px;
+  width: 10.98901099px;
+  position: absolute;
+  background: purple;
+}
+.spinner .ball-1 {
+  transform: rotate(-315deg);
+  opacity: 0.125;
+}
+.spinner .ball-2 {
+  transform: rotate(-270deg);
+  opacity: 0.25;
+}
+.spinner .ball-3 {
+  transform: rotate(-225deg);
+  opacity: 0.375;
+}
+.spinner .ball-4 {
+  transform: rotate(-180deg);
+  opacity: 0.5;
+}
+.spinner .ball-5 {
+  transform: rotate(-135deg);
+  opacity: 0.625;
+}
+.spinner .ball-6 {
+  transform: rotate(-90deg);
+  opacity: 0.75;
+}
+.spinner .ball-7 {
+  transform: rotate(-45deg);
+  opacity: 0.875;
 }

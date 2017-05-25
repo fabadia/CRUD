@@ -28,4 +28,8 @@
             </tr>
         </tbody>
     </table>
+    <div if.bind="busy">
+        <div class="backdrop"></div>
+        <i class="glyphicon glyphicon-cog spinning" style="position:absolute;top:calc(50% - 33vh/2);left:calc(50% - 33vh/2);font-size: 33vh;color: violet;"></i>
+    </div>
 </template>

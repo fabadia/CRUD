@@ -156,7 +156,7 @@
         </ux-dialog-body>
         <ux-dialog-footer class="panel-footer">
             <page-navigator view-model.ref="pagination" total-pages.bind="4" style="float:left" can-go-to-next-page.call="canGoToNextPage()"></page-navigator>
-            <button class="btn btn-success" click.trigger="save()" disabled.bind="!pagination.isLastPage">Salvar</button>
+            <button class="btn btn-success" click.trigger="save()" disabled.bind="!pagination.isLastPage">Salvar <i class="glyphicon glyphicon-cog spinning" if.bind="saving"></i></button>
             <button class="btn btn-warning" click.trigger="controller.cancel()">Cancelar</button>
         </ux-dialog-footer>
     </ux-dialog>

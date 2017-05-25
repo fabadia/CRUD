@@ -1,0 +1,63 @@
+﻿.spinning {
+    animation: spinning 2s infinite linear;
+    transform-origin: 50% 49%
+}
+
+@keyframes spinning {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+.i(@dots) {
+    .loop (@index) when (@index =< @dots) {
+        @class: ~"ball-@{index}";
+        @deg: -360 + 45 * @index;
+        @opacity: 1 / 8 * @index;
+        //print the CSS
+        .@{class} {
+            transform: ~"rotate(@{deg}deg)";
+            opacity: @opacity;
+        }
+        // next iteration
+        .loop(@index + 1);
+    }
+
+    .loop (1);
+}
+
+/*
+    Spinn
+*/
+@radius: 30px;
+@ballSize: @radius / 2.73;
+@duration: .1s;
+
+.spinner {
+    width: @radius;
+    height: @radius;
+    border-bottom-color: blue;
+    position: absolute;
+    top: calc(50vh - 5px);
+    left: calc(50vw);
+    animation: spinning (8*@duration) infinite steps(8);
+
+    .ball {
+        height: @radius;
+        width: @radius;
+        position: absolute;
+
+        &:before {
+            content: '';
+            border-radius: 50%;
+            height: @ballSize;
+            width: @ballSize;
+            position: absolute;
+            background: purple;
+        }
+    }
+
+    .i(7);
+}
+

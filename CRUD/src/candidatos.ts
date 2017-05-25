@@ -7,6 +7,7 @@ import { MensageBoxResult, MensageBox } from "./resources/mensagebox";
 @autoinject
 export class Candidatos {
     public candidatos = [];
+    public busy: boolean;
 
     constructor(private http: HttpClient, private dialog: DialogService) {
         http.configure(config => {
@@ -32,8 +33,12 @@ export class Candidatos {
     }
 
     editar(candidato): Promise<boolean> {
+        if (this.busy)
+            return Promise.resolve(false);
+        this.busy = true;
         return this.dialog.open({ viewModel: Candidato, model: candidato.id, keyboard: ['Enter', 'Escape'] })
             .then(result => {
+                this.busy = false;
                 return (<DialogOpenResult>result).closeResult;
             })
             .then((dialogResult) => {
@@ -53,6 +58,7 @@ export class Candidatos {
         MensageBox.confirm("Deseja realmente excluir?")
             .then((result) => {
                 if (result === MensageBoxResult.yes) {
+                    this.busy = true;
                     this.http.fetch('/' + candidato.id, { method: 'DELETE' })
                         .then(value => {
                             let index = this.candidatos.indexOf(candidato);
@@ -62,6 +68,9 @@ export class Candidatos {
                         })
                         .catch(reason => {
                             MensageBox.showWarning('Exclusão não efetuada. (' + reason.status + '-' + reason.statusText + ')');
+                        })
+                        .then(() => {
+                            this.busy = false;
                         });
                 }
             });

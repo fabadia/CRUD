@@ -2,6 +2,7 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogService, DialogOpenResult } from "aurelia-dialog";
 import { Candidato } from "./candidato";
+import { MensageBoxResult, MensageBox } from "./resources/mensagebox";
 
 @autoinject
 export class Candidatos {
@@ -49,11 +50,20 @@ export class Candidatos {
     }
 
     excluir(candidato) {
-        this.http.fetch('/' + candidato.id, { method: 'DELETE' })
-            .then(value => {
-                let index = this.candidatos.indexOf(candidato);
-                if (index !== -1)
-                    this.candidatos.splice(index, 1);
+        MensageBox.confirm("Deseja realmente excluir?")
+            .then((result) => {
+                if (result === MensageBoxResult.yes) {
+                    this.http.fetch('/' + candidato.id, { method: 'DELETE' })
+                        .then(value => {
+                            let index = this.candidatos.indexOf(candidato);
+                            if (index !== -1)
+                                this.candidatos.splice(index, 1);
+                            MensageBox.showInfo('Exclusão efetuada com sucesso');
+                        })
+                        .catch(reason => {
+                            MensageBox.showWarning('Exclusão não efetuada. (' + reason.status + '-' + reason.statusText + ')');
+                        });
+                }
             });
     }
 }

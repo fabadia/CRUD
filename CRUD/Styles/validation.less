@@ -1,0 +1,28 @@
+﻿@has-error-color: #a94442;
+@required-color: red;
+
+.control-label.required::after {
+    content: '*';
+    color: @required-color;
+}
+
+p.required {
+    color: @required-color;
+}
+
+.help-block:empty {
+    display: none;
+}
+
+ul.help-block {
+    margin: 0;
+    padding: 0px;
+
+    li {
+        list-style-type: none;
+    }
+}
+
+.has-error .level-side-text {
+    color: @has-error-color;
+}

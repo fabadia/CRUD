@@ -35,3 +35,23 @@ input[type=radio] {
 .level-group .level-side-text {
   margin-top: 0.5em;
 }
+.control-label.required::after {
+  content: '*';
+  color: red;
+}
+p.required {
+  color: red;
+}
+.help-block:empty {
+  display: none;
+}
+ul.help-block {
+  margin: 0;
+  padding: 0px;
+}
+ul.help-block li {
+  list-style-type: none;
+}
+.has-error .level-side-text {
+  color: #a94442;
+}

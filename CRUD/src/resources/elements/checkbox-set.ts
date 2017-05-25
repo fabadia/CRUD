@@ -1,4 +1,5 @@
 ﻿import { bindable, bindingMode, inject, DOM } from "aurelia-framework";
+import { validateTrigger } from "aurelia-validation";
 
 @inject(Element)
 export class CheckboxSet {
@@ -8,6 +9,7 @@ export class CheckboxSet {
     @bindable({ defaultBindingMode: bindingMode.twoWay }) values: Array<any>;
     @bindable() valueId: string;
     @bindable() name: string;
+    private binding;
 
     constructor(private element: Element) {
         (<any>element).focus = () => element.querySelector('input').focus();
@@ -15,6 +17,13 @@ export class CheckboxSet {
 
     bind() {
         this.loadValues();
+        for (let boundProperty of (<any>this.element).au.controller.boundProperties) {
+            let binding = boundProperty.binding;
+            if (binding.targetProperty === "values" && binding["behavior-validate"].getValidateTrigger(binding.validationController) & validateTrigger.change) {
+                this.binding = binding;
+                break;
+            }
+        }
     }
 
     blur() {
@@ -24,6 +33,11 @@ export class CheckboxSet {
                 this.element.dispatchEvent(event);
             }
         });
+    }
+
+    validate() {
+        if (this.binding)
+            this.binding.validationController.validateBinding(this.binding);
     }
 
     itemsChanged() {
@@ -56,5 +70,6 @@ export class CheckboxSet {
                     this.values.splice(i, 1);
                     break;
                 }
+        this.validate();
     }
 }

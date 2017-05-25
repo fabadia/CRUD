@@ -1,4 +1,5 @@
 ﻿import { bindable, bindingMode, inject, DOM } from "aurelia-framework";
+import { validateTrigger } from "aurelia-validation";
 
 @inject(Element)
 export class RadioSet {
@@ -7,6 +8,7 @@ export class RadioSet {
     @bindable() options: Array<any>;
     @bindable({ defaultBindingMode: bindingMode.twoWay }) value;
     @bindable() name: string;
+    private binding;
 
     constructor(private element: Element) {
         (<any>element).focus = () => element.querySelector('input').focus();
@@ -19,6 +21,14 @@ export class RadioSet {
                 this.options[i] = [option[this.optionId], option[this.optionLabel]];
             }
         }
+
+        for (let boundProperty of (<any>this.element).au.controller.boundProperties) {
+            let binding = boundProperty.binding;
+            if (binding.targetProperty === "value" && binding["behavior-validate"].getValidateTrigger(binding.validationController) & validateTrigger.change) {
+                this.binding = binding;
+                break;
+            }
+        }
     }
 
     blur() {
@@ -28,5 +38,10 @@ export class RadioSet {
                 this.element.dispatchEvent(event);
             }
         });
+    }
+
+    validate() {
+        if (this.binding)
+            this.binding.validationController.validateBinding(this.binding);
     }
 }

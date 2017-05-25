@@ -29,7 +29,7 @@ namespace CRUD.Controllers
         {
             var properties = typeof(Candidato).GetProperties();
             var metadata = new Dictionary<string, Dictionary<string, object>>();
-            Dictionary<string, object> info;
+            Dictionary<string, object> info, validacao;
             foreach (var property in properties)
             {
                 string nome = property.Name;
@@ -37,6 +37,22 @@ namespace CRUD.Controllers
 
                 metadata.Add(nome, info = new Dictionary<string, object>());
                 info.Add("Titulo", titulo);
+                info.Add("Validacao", validacao = new Dictionary<string, object>());
+
+                int maxLength;
+                int minLength;
+                bool requerido = property.GetCustomAttribute<RequiredAttribute>() != null || Nullable.GetUnderlyingType(property.PropertyType) == null && property.PropertyType.GetTypeInfo().IsValueType;
+                if (requerido)
+                    validacao.Add("required", requerido);
+                if ((maxLength = property.GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 0) > 0)
+                    validacao.Add("maxLength", maxLength);
+                if ((minLength = property.GetCustomAttribute<MinLengthAttribute>()?.Length ?? 0) > 0)
+                    if (property.PropertyType == typeof(string))
+                        validacao.Add("minLength", minLength);
+                    else
+                        validacao.Add("minItems", minLength);
+                if (property.GetCustomAttribute<EmailAddressAttribute>() != null)
+                    validacao.Add("email", true);
             }
             return metadata;
         }

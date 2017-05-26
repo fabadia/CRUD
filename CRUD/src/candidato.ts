@@ -5,6 +5,7 @@ import { PageNavigator } from "./resources/elements/page-navigator"
 import { ValidationController, ValidationRules, ValidationControllerFactory, validateTrigger, FluentRules, FluentRuleCustomizer, Rules, validationMessages } from "aurelia-validation";
 import { FormValidationRenderer } from "./resources/form-validation-renderer";
 import { MensageBoxResult, MensageBox } from "./resources/mensagebox";
+import { ChangesChecker } from "./resources/changes-checker";
 
 @autoinject
 export class Candidato {
@@ -19,6 +20,8 @@ export class Candidato {
     private metadata;
     private hasRequiredField: boolean;
     private saving: boolean;
+    private closingConfirmed: boolean = false;
+    private changesChecker: ChangesChecker;
 
     constructor(private element: Element,
         private http: HttpClient,
@@ -123,10 +126,26 @@ export class Candidato {
         validationMessages['required'] = '\${$displayName} deve ser preenchido.';
         validationMessages['maxLength'] = '${$displayName} deve ter no máximo ${$config.length} caracter${$config.length === 1 ? "" : "es"}.';
         validationMessages['minLength'] = '${$displayName} deve ter no mínimo ${$config.length} caracter${$config.length === 1 ? "" : "es"}.';
+
+        this.changesChecker = new ChangesChecker(this.candidato);
     }
 
     detached() {
         this.subscriptionPaginationChange.dispose();
+    }
+
+    canDeactivate() {
+        if (!this.closingConfirmed && this.changesChecker.hasChanges()) {
+            MensageBox.confirm('As alterações serão perdidas. Deseja realmente fechar?')
+                .then(result => {
+                    if (result === MensageBoxResult.yes) {
+                        this.closingConfirmed = true;
+                        this.controller.cancel();
+                    }
+                });
+            return false;
+        }
+        return true;
     }
 
     private get isEditing() {
@@ -185,6 +204,7 @@ export class Candidato {
 
                     save
                         .then(() => {
+                            this.closingConfirmed = true;
                             this.controller.ok(this.candidato);
                         })
                         .catch((reason: Response) => {
